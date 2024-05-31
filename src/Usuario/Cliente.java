@@ -159,7 +159,7 @@ public class Cliente extends Usuario {
         }
         
   
-		Pieza pieza = new Pieza(codigoPieza, anoCreacion, autor, lugarCraecion, titulo, fechaFormateada, precioCompra, this, null);
+		Pieza pieza = new Pieza(codigoPieza, anoCreacion, autor, lugarCraecion, titulo, fechaFormateada, precioCompra, this, lugarGaleria);
 		piezas.add(pieza);
 		
 		

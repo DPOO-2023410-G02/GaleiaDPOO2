@@ -88,65 +88,39 @@ public class PersistenciaPiezas {
 		for (int i = 0; i < jPiezasColeccion.length(); i++) {
 			JSONObject jPieza = jPiezasColeccion.getJSONObject(i);
 			
-        	String anoCreacion = jPieza.getString("anoCreacion");
-        	String autor = jPieza.getString("autor");
-        	String codigo = jPieza.getString("codigo");
-        	String consignacion = jPieza.getString("consignacion");
-        	String lugar = jPieza.getString("lugar");
-        	String lugarCreacion = jPieza.getString("lugarCreacion");
         	String titulo = jPieza.getString("titulo");
-        	int precioCompra = jPieza.getInt("precioCompra");
-        	String login = jPieza.getString("propietario");
-        	
-        	Usuario propietario = galeria.getUsuario(login);
-        	Pieza pieza = new Pieza(codigo, anoCreacion, autor, lugarCreacion, titulo, consignacion, precioCompra, (Cliente) propietario, lugar);
+       	 	
+        	Pieza pieza = PersistenciaUsuarios.getPieza(titulo);
 			piezasColeccion.add(pieza);
         	
 		}
 		
 		
-		JSONArray jPiezasBodega = jInventario.getJSONArray("piezasBodedga");
+		JSONArray jPiezasBodega = jInventario.getJSONArray("piezasBodega");
 		List <Pieza> piezasBodega = new ArrayList<Pieza>();  
 		for (int i = 0; i < jPiezasBodega.length(); i++) 
 		{
 			JSONObject jPieza = jPiezasBodega.getJSONObject(i);
 			
-        	String anoCreacion = jPieza.getString("anoCreacion");
-        	String autor = jPieza.getString("autor");
-        	String codigo = jPieza.getString("codigo");
-        	String consignacion = jPieza.getString("consignacion");
-        	String lugar = jPieza.getString("lugar");
-        	String lugarCreacion = jPieza.getString("lugarCreacion");
         	String titulo = jPieza.getString("titulo");
-        	int precioCompra = jPieza.getInt("precioCompra");
-        	String login = jPieza.getString("propietario");
-        	
-        	Usuario propietario = galeria.getUsuario(login);
-        	Pieza pieza = new Pieza(codigo, anoCreacion, autor, lugarCreacion, titulo, consignacion, precioCompra, (Cliente) propietario, lugar);
+
+        	Pieza pieza = PersistenciaUsuarios.getPieza(titulo);
 			piezasBodega.add(pieza);
 					
 		}
 		
-		JSONArray jPiezasPasado = jInventario.getJSONArray("piezasPasado");
+		JSONArray jPiezasPasado = jInventario.getJSONArray("piezasPasadas");
 		List <Pieza> piezasPasado = new ArrayList<Pieza>();  
 		for (int i = 0; i < jPiezasPasado.length(); i++) 
 		{
 			JSONObject jPieza = jPiezasPasado.getJSONObject(i);
 			
-        	String anoCreacion = jPieza.getString("anoCreacion");
-        	String autor = jPieza.getString("autor");
-        	String codigo = jPieza.getString("codigo");
-        	String consignacion = jPieza.getString("consignacion");
-        	String lugar = jPieza.getString("lugar");
-        	String lugarCreacion = jPieza.getString("lugarCreacion");
+
         	String titulo = jPieza.getString("titulo");
-        	int precioCompra = jPieza.getInt("precioCompra");
-        	String login = jPieza.getString("propietario");
-        	
-        	Usuario propietario = galeria.getUsuario(login);
-        	Pieza pieza = new Pieza(codigo, anoCreacion, autor, lugarCreacion, titulo, consignacion, precioCompra, (Cliente) propietario, lugar);
+
+        	       	
+        	Pieza pieza = PersistenciaUsuarios.getPieza(titulo);
 			piezasPasado.add(pieza);
-					
 		}
 		
 		Inventario inventario = new Inventario();
@@ -158,4 +132,5 @@ public class PersistenciaPiezas {
   
 	}
 }
+
 

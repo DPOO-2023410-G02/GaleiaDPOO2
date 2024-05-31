@@ -82,11 +82,10 @@ public class GaleriaDeArte {
 	}
 
 	//Se obtiene una lista con todos los usuarios
-	public static Collection<Usuario> getUsuarios()
-	{
-		return usuarios.values();	
+	public static List<Usuario> getUsuarios() {
+	    return new ArrayList<>(usuarios.values());
 	}
-	
+
 	public boolean iniciarSesionCliente(String nombreUsuario, String password) {
 		
 		if(getUsuario(nombreUsuario)!= null && getUsuario(nombreUsuario).getLogin().equals(nombreUsuario) && getUsuario(nombreUsuario).getPassword().equals(password) ) {
@@ -148,6 +147,10 @@ public class GaleriaDeArte {
 
 	public static void setInventario(Inventario inventario) {
 		GaleriaDeArte.inventario = inventario;
+	}
+
+	public static void setRegistrosPorSubasta(List<List<String>> registrosPorSubasta) {
+		GaleriaDeArte.registrosPorSubasta = registrosPorSubasta;
 	}
 	
     

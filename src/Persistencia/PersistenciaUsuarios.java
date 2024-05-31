@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,8 +22,11 @@ import org.json.JSONObject;
 
 
 public class PersistenciaUsuarios {
+
 	
-	private List<Pieza> piezasCargadas;
+	
+	private static List<Pieza> piezasCargadas;
+	
 	
 	public PersistenciaUsuarios() {
 		
@@ -33,35 +37,6 @@ public class PersistenciaUsuarios {
     {
         JSONArray jUsuarios = new JSONArray( );
         
-        Administrador administrador = galeria.getAdministrador();
-        String loginAdmin = administrador.getLogin();
-        String nameAdmin = administrador.getNombre();
-        String passwordAdmin = administrador.getPassword();
-        JSONObject jAdministrador = new JSONObject();
-        jAdministrador.put("password", passwordAdmin);
-        jAdministrador.put("login", loginAdmin);
-        jAdministrador.put("nombre", nameAdmin);
-        jUsuarios.put(jAdministrador);
-        
-        Cajero cajero = galeria.getCajero();
-        String loginCajero = cajero.getLogin();
-        String nameCajero = cajero.getNombre();
-        String passwordCajero = cajero.getPassword();
-        JSONObject jCajero= new JSONObject();
-        jCajero.put("password", passwordCajero);
-        jCajero.put("login", loginCajero);
-        jCajero.put("nombre", nameCajero);
-        jUsuarios.put(jCajero);
-        
-        Operador operador = galeria.getOperador();
-        String loginOperador = operador.getLogin();
-        String nameOperador = operador.getNombre();
-        String passwordOperador = operador.getPassword();
-        JSONObject jOperador = new JSONObject();
-        jOperador.put("password", passwordOperador);
-        jOperador.put("login", loginOperador);
-        jOperador.put("nombre", nameOperador);
-        jUsuarios.put(jOperador);
         
         for( Usuario cliente : galeria.getUsuarios( ) )
         {
@@ -183,36 +158,12 @@ public class PersistenciaUsuarios {
     public void CargarUsuarios(GaleriaDeArte galeria, JSONArray jUsuarios) {
     	
     	for (int i = 0; i < jUsuarios.length(); i++ ) {
-    		if(i == 0) 
-    		{
-    			JSONObject jAdministardor = jUsuarios.getJSONObject( i );
-    			String login = jAdministardor.getString("login");
-    			String password = jAdministardor.getString("password");
-    			String name = jAdministardor.getString("nombre");
-    			galeria.AgregarAdministrador(password, login, name);
-    			
-    		}else if(i == 1)
-    		{
-    			JSONObject jCajero = jUsuarios.getJSONObject( i );
-    			String login = jCajero.getString("login");
-    			String password = jCajero.getString("password");
-    			String name = jCajero.getString("nombre");   
-    			galeria.AgregarCajero(password, login, name);
-    			
-    		}else if(i == 2) 
-    		{
-    			JSONObject jOperador = jUsuarios.getJSONObject( i );
-    			String login = jOperador.getString("login");
-    			String password = jOperador.getString("password");
-    			String name = jOperador.getString("nombre");   		
-    			galeria.AgregarOperador(password, login, name);
-    		}
-    		else 
-    		{
+    		
+    	
     			JSONObject jCliente = jUsuarios.getJSONObject(i);
     			Usuario clienteGaleria = CargarUsuario(jCliente);
     			galeria.AgregarUsuario(clienteGaleria);
-    		}
+    		
     	}
     	
     	AsociarUsariosPiezas(galeria);
@@ -221,20 +172,19 @@ public class PersistenciaUsuarios {
     
     
     private void AsociarUsariosPiezas(GaleriaDeArte galeria) {
-		List<Usuario> usuariosLista =  (List<Usuario>) galeria.getUsuarios();
-		for ( Usuario usuario : usuariosLista ) 
-		{
-			Cliente cliente = (Cliente) usuario;
-			
-			List<Pieza>  piezas = cliente.getPasadas();
-			for ( Pieza pieza : piezas ) 
-			{
-				pieza.setPropietario(cliente);
-			}
-			
-		}
-	}
-    
+        List<Usuario> usuariosLista = galeria.getUsuarios();
+        for (Usuario usuario : usuariosLista) {
+            if (usuario instanceof Cliente) {
+                Cliente cliente = (Cliente) usuario;
+                List<Pieza> piezas = cliente.getPasadas();
+                for (Pieza pieza : piezas) {
+                    pieza.setPropietario(cliente);
+                }
+            }
+        }
+    }
+
+
     
 
 	public Usuario  CargarUsuario(JSONObject cliente)
@@ -250,10 +200,10 @@ public class PersistenciaUsuarios {
     	JSONArray Compras = cliente.getJSONArray("compras");
     	List<Compra> comprasCliente = JsonArrayComprasToPiezas(Compras);
     	
-    	JSONArray jPiezas = cliente.getJSONArray("compras");
+    	JSONArray jPiezas = cliente.getJSONArray("piezas");
     	List<Pieza> PiezasCliente = JSONPiezasToPiezas(jPiezas);
     	
-    	JSONArray jPiezasPasadas = cliente.getJSONArray("compras");
+    	JSONArray jPiezasPasadas = cliente.getJSONArray("piezasPasadas");
     	List<Pieza> PiezasPasadas = JSONPiezasToPiezas(jPiezasPasadas);
     	
     	Cliente clienteGaleria = new Cliente(password, login, name);
@@ -282,6 +232,7 @@ public class PersistenciaUsuarios {
     		JSONObject jpiezaCompra = jCompra.getJSONObject("pieza");
     		Pieza piezaCompra = JSONPiezaToPieza(jpiezaCompra);
     		int valorCompra = jCompra.getInt("valor");
+    		
     		Compra compraCliente = new Compra(piezaCompra);
     		comprasCliente.add(compraCliente);
 
@@ -301,8 +252,14 @@ public class PersistenciaUsuarios {
     	String titulo = jPieza.getString("titulo");
     	int precioCompra = jPieza.getInt("precioCompra");
     	
-		return new Pieza(codigo, anoCreacion, autor, lugarCreacion, titulo, consignacion, precioCompra, null, lugar);
-    	
+    	if (!piezaExist(titulo)) {
+    	Pieza pieza = new Pieza(codigo, anoCreacion, autor, lugarCreacion, titulo, consignacion, precioCompra, null, lugar);
+    	piezasCargadas.add(pieza);
+		return pieza;
+    	}else {
+    		Pieza pieza2 = getPieza(titulo);
+    		return pieza2;
+    	}
     }
     
     public List<Pieza> JSONPiezasToPiezas(JSONArray jPiezas) 
@@ -322,12 +279,46 @@ public class PersistenciaUsuarios {
         	String titulo = jPieza.getString("titulo");
         	int precioCompra = jPieza.getInt("precioCompra");
         	
+        	if (!piezaExist(titulo)) {
         	Pieza pieza =  new Pieza(codigo, anoCreacion, autor, lugarCreacion, titulo, consignacion, precioCompra, null, lugar);
         	piezasCliente.add(pieza);
+        	piezasCargadas.add(pieza);
+        	}else {
+        		Pieza pieza = getPieza(titulo);
+        		piezasCliente.add(pieza);
+        	}
+        	
     	}
     	return piezasCliente;
     }
     
     
-}
 
+
+	public boolean piezaExist(String titulo) {
+		
+		for(Pieza pieza: piezasCargadas) {
+			if (pieza.getTitulo().equals(titulo)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static Pieza getPieza(String titulo) {
+		
+		for(Pieza pieza: piezasCargadas) {
+			if (pieza.getTitulo().equals(titulo)) {
+				return pieza;
+			}
+		}
+		return null;		
+	}
+
+	public  static List<Pieza> getPiezasCargadas() {
+		return piezasCargadas;
+	}
+	
+	
+	
+}
