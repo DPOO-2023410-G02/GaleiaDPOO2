@@ -94,7 +94,7 @@ public class VentanaFuncionesCliente extends JFrame {
                             }
 
                             // Crear un array con los nombres de las columnas
-                            String[] columnas = {"Título", "Autor", "Tipo de Pieza", "Código"};
+                            String[] columnas = {"Título", "Autor", "Precio Compra", "Código"};
 
                             // Crear la tabla con los datos y columnas
                             JTable tablaPiezas = new JTable(datos, columnas);
