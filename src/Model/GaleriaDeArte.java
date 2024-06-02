@@ -1,5 +1,7 @@
 package Model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,6 +34,8 @@ public class GaleriaDeArte {
 	private static Cajero cajero;
 	
 	private static List<List<String>> registrosPorSubasta;
+	
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
 	// Se Inicializa una galeria de arte con los contenedores de información
 	public GaleriaDeArte()
@@ -153,5 +157,16 @@ public class GaleriaDeArte {
 		GaleriaDeArte.registrosPorSubasta = registrosPorSubasta;
 	}
 	
-    
+    public Map<LocalDate, Integer> contarVentasPorDia() {
+        Map<LocalDate, Integer> ventasPorDia = new HashMap<>();
+        List<Pieza> piezas = inventario.getPiezasPasadas();
+        
+        for (Pieza pieza : piezas) {
+            LocalDate fecha = LocalDate.parse(pieza.getFechaVenta(), formatter);
+            ventasPorDia.put(fecha, ventasPorDia.getOrDefault(fecha, 0) + 1);
+        }
+        
+        return ventasPorDia;
+    }	
+
 }

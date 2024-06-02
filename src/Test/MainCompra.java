@@ -84,21 +84,6 @@ public class MainCompra {
         Administrador admin = galeria.getAdministrador();
         System.out.println(admin.getHistorial("Juan12").get(0).getPieza());
         
-        
-        
-        
-//        PersistenciaUsuarios persistencia = new PersistenciaUsuarios();
-//        JSONArray usuariosJSON = persistencia.salvarUsuarios(galeria);
-//        try {
-//            // Escribir el JSON en un archivo
-//            FileWriter fileWriter = new FileWriter("usuarios.json");
-//            fileWriter.write(usuariosJSON.toString());
-//            fileWriter.flush();
-//            fileWriter.close();
-//            
-//            System.out.println("Datos de usuarios guardados en usuarios.json correctamente.");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        System.out.println(galeria.contarVentasPorDia());
     }
 }
