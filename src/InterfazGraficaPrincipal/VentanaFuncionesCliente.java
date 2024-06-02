@@ -105,6 +105,22 @@ public class VentanaFuncionesCliente extends JFrame {
                             // Mostrar el diálogo con la tabla
                             JOptionPane.showMessageDialog(null, scrollPane, "Piezas Propias", JOptionPane.PLAIN_MESSAGE);
                         }
+                    } else if (seleccion.equals("Consignar pieza Galeria")) {
+                        String codigoPieza = JOptionPane.showInputDialog(null, "Ingrese el código de la pieza a consignar:");
+                        if (codigoPieza != null) { 
+                        	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
+                            Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);   
+                            
+                            if (cliente.getPasadas().contains(cliente.buscarPieza(codigoPieza))) {
+
+                                cliente.RealizarConsignacion(codigoPieza);                                
+                                JOptionPane.showMessageDialog(null, "Pieza consignada correctamente");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "El código de pieza ingresado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se ingresó ningún código de pieza", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(null, seleccion + " seleccionada");
                     }
