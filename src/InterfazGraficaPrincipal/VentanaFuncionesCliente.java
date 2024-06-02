@@ -23,10 +23,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Model.GaleriaDeArte;
+import Model.Subasta;
 import Persistencia.PersistenciaPiezas;
 import Persistencia.PersistenciaSubastas;
 import Persistencia.PersistenciaUsuarios;
 import Pieza.Pieza;
+import Usuario.Administrador;
 import Usuario.Cliente;
 
 import javax.swing.*;
@@ -138,6 +140,65 @@ public class VentanaFuncionesCliente extends JFrame {
                 }
             });
         
+        btnSubasta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Crear un nuevo JFrame para las opciones de subasta
+                JFrame frameSubasta = new JFrame("Opciones de Subasta");
+                frameSubasta.setLayout(new BorderLayout());
+
+                // Crear un JComboBox con las opciones y un JPanel para contenerlo
+                String[] opcionesSubasta = {"Ingresar a subasta", "Realizar puja"};
+                JComboBox<String> comboBoxSubasta = new JComboBox<>(opcionesSubasta);
+                JPanel panelOpcionesSubasta = new JPanel();
+                panelOpcionesSubasta.add(comboBoxSubasta);
+
+                // Agregar el JPanel al centro del JFrame
+                frameSubasta.add(panelOpcionesSubasta, BorderLayout.CENTER);
+
+                // Acción para el JComboBox
+                comboBoxSubasta.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String seleccion = (String) comboBoxSubasta.getSelectedItem();
+                        if (seleccion.equals("Ingresar a subasta")) {
+                        	Administrador administrador =GaleriaDeArte.getAdministrador();
+                        	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
+                            Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
+                            Subasta subasta = GaleriaDeArte.getSubasta();
+                        	boolean confirmacion = administrador.verificarUsuarioSubasta(cliente, subasta.obtenerValorMinimoPrecioActual());
+
+                        	if (confirmacion!= false) {
+                        		cliente.ingresarASubasta();
+                        	} else {
+                        		
+                        	}
+                        	
+                            JOptionPane.showMessageDialog(null, "Ingresar a subasta");
+                        } else if (seleccion.equals("Realizar puja")) {
+                            // Aquí puedes implementar la funcionalidad para realizar una puja
+                            JOptionPane.showMessageDialog(null, "Realizar puja");
+                        }
+                    }
+                });
+
+                // Botón de salir
+                JButton btnSalirSubasta = new JButton("Cerrar");
+                frameSubasta.add(btnSalirSubasta, BorderLayout.SOUTH);
+
+                // Acción para el botón "Cerrar"
+                btnSalirSubasta.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        frameSubasta.dispose(); // Cerrar la ventana de opciones de subasta
+                    }
+                });
+
+                frameSubasta.setSize(400, 200);
+                frameSubasta.setLocationRelativeTo(null);
+                frameSubasta.setVisible(true);
+            }
+        });
 
         btnCompra.addActionListener(new ActionListener() {
             @Override
