@@ -98,7 +98,7 @@ public class VentanaPrincipal extends JFrame {
         String contrasena = panelRegistroOperador.getContrasena();
 
         if (modelo.iniciarSesionOperador(usuario, contrasena)) {
-            JOptionPane.showMessageDialog(this, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ingreso exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             VentanaFuncionesOperador ventanaFuncionesOperador = new VentanaFuncionesOperador();
             ventanaFuncionesOperador.setLocationRelativeTo(null);
             ventanaFuncionesOperador.setVisible(true);
@@ -113,7 +113,7 @@ public class VentanaPrincipal extends JFrame {
         String contrasena = panelRegistroAdmin.getContrasena();
 
         if (modelo.iniciarSesionAdmin(usuario, contrasena)) {
-            JOptionPane.showMessageDialog(this, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ingreso exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             VentanaFuncionesAdmin ventanaFuncionesAdmin = new VentanaFuncionesAdmin();
             ventanaFuncionesAdmin.setLocationRelativeTo(null);
             ventanaFuncionesAdmin.setVisible(true);
@@ -128,7 +128,7 @@ public class VentanaPrincipal extends JFrame {
         String contrasena = panelRegistroCliente.getContrasena();
 
         if (modelo.iniciarSesionCliente(usuario, contrasena)) {
-            JOptionPane.showMessageDialog(this, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ingreso exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             VentanaFuncionesCliente ventanaFuncionesCliente = new VentanaFuncionesCliente();
             ventanaFuncionesCliente.setLocationRelativeTo(null);
             ventanaFuncionesCliente.setVisible(true);
