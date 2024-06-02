@@ -1,11 +1,14 @@
 package InterfazGraficaPrincipal;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import Model.GaleriaDeArte;
 
 public class VentanaPrincipal extends JFrame {
@@ -14,6 +17,8 @@ public class VentanaPrincipal extends JFrame {
     private PanelRegistroAdmin panelRegistroAdmin;
     private PanelRegistroOperador panelRegistroOperador;
     private PanelRegistro panelRegistro; // Panel con los tres botones
+    private JPanel panelContenedor; // Contenedor para los paneles de registro
+    private CardLayout cardLayout; // CardLayout para alternar entre paneles
     private GaleriaDeArte modelo;
 
     public VentanaPrincipal() {
@@ -23,9 +28,9 @@ public class VentanaPrincipal extends JFrame {
 
         try {
             modelo = new GaleriaDeArte();
-            modelo.AgregarAdministrador("admin23", "Qwer1234", "Camilo");
-            modelo.AgregarCajero("cajero23", "Qwer1234", "Ernesto");
-            modelo.AgregarOperador("operador23", "Qwer1234", "Arturo");
+            modelo.AgregarAdministrador("1234", "admin23", "Camilo");
+            modelo.AgregarCajero("1234", "cajero23", "Ernesto");
+            modelo.AgregarOperador("1234", "operador23", "Arturo");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar el museo", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -36,41 +41,46 @@ public class VentanaPrincipal extends JFrame {
         panelOpc = new PanelOpciones(this);
         add(panelOpc, BorderLayout.SOUTH);
 
+        // Crear el contenedor con CardLayout
+        panelContenedor = new JPanel();
+        cardLayout = new CardLayout();
+        panelContenedor.setLayout(cardLayout);
+
+        // Crear los paneles de registro
         panelRegistroAdmin = new PanelRegistroAdmin();
         panelRegistroAdmin.setActionListener(e -> registrarAdministrador());
-        add(panelRegistroAdmin, BorderLayout.CENTER);
-        panelRegistroAdmin.setVisible(false);
 
         panelRegistroOperador = new PanelRegistroOperador();
         panelRegistroOperador.setActionListener(e -> registrarOperador());
-        add(panelRegistroOperador, BorderLayout.CENTER);
-        panelRegistroOperador.setVisible(false);
 
         panelRegistro = new PanelRegistro(this); // Inicializar el nuevo panel
-        add(panelRegistro, BorderLayout.CENTER);
-        panelRegistro.setVisible(false);
+
+        // Añadir los paneles al contenedor
+        panelContenedor.add(panelRegistro, "PanelRegistro");
+        panelContenedor.add(panelRegistroAdmin, "PanelRegistroAdmin");
+        panelContenedor.add(panelRegistroOperador, "PanelRegistroOperador");
+
+        // Añadir el contenedor al centro del BorderLayout
+        add(panelContenedor, BorderLayout.CENTER);
+
+        // Mostrar el panel de registro por defecto
+        cardLayout.show(panelContenedor, "PanelRegistro");
     }
 
     public void mostrarPanelRegistroAdmin() {
-        panelRegistroAdmin.setVisible(true);
-        panelRegistroOperador.setVisible(false);
-        panelRegistro.setVisible(false);
+        cardLayout.show(panelContenedor, "PanelRegistroAdmin");
     }
 
     public void mostrarPanelRegistro() {
-        panelRegistro.setVisible(true);
-        panelRegistroAdmin.setVisible(false);
-        panelRegistroOperador.setVisible(false);
+        cardLayout.show(panelContenedor, "PanelRegistro");
     }
 
     public void mostrarPanelRegistroOperador() {
-        panelRegistroOperador.setVisible(true);
-        panelRegistroAdmin.setVisible(false);
-        panelRegistro.setVisible(false);
+        cardLayout.show(panelContenedor, "PanelRegistroOperador");
     }
 
     private void registrarOperador() {
-    	String usuario = panelRegistroOperador.getUsuario();
+        String usuario = panelRegistroOperador.getUsuario();
         String contrasena = panelRegistroOperador.getContrasena();
 
         if (modelo.iniciarSesionAdmin(usuario, contrasena)) {
