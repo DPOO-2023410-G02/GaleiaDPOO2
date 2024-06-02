@@ -4,12 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import Model.GaleriaDeArte;
+import Persistencia.PersistenciaPiezas;
+import Persistencia.PersistenciaSubastas;
+import Persistencia.PersistenciaUsuarios;
 import Usuario.Cliente;
 
 public class VentanaPrincipal extends JFrame {
@@ -22,7 +32,7 @@ public class VentanaPrincipal extends JFrame {
     private PanelInicioSesion panelInicioSesion; // Panel con los tres botones
     private JPanel panelContenedor; // Contenedor para los paneles de registro
     private CardLayout cardLayout; // CardLayout para alternar entre paneles
-    private GaleriaDeArte modelo;
+    private static GaleriaDeArte modelo;
 
     public VentanaPrincipal() {
         setSize(750, 650);
@@ -31,6 +41,7 @@ public class VentanaPrincipal extends JFrame {
 
         try {
             modelo = new GaleriaDeArte();
+            cargarDatos(modelo);
             modelo.AgregarAdministrador("1234", "admin23", "Camilo");
             modelo.AgregarCajero("1234", "cajero23", "Ernesto");
             modelo.AgregarOperador("1234", "operador23", "Arturo");
@@ -161,5 +172,54 @@ public class VentanaPrincipal extends JFrame {
 
 	public void setPanelRegistroCliente(PanelRegistroCliente panelRegistroCliente) {
 		this.panelRegistroCliente = panelRegistroCliente;
+	}
+	
+	private static void cargarDatos(GaleriaDeArte galeria) {
+        try {
+            // Cargar usuarios
+            String usuariosContent = new String(Files.readAllBytes(Paths.get("usuarios.json")));
+            JSONArray jUsuarios = new JSONArray(usuariosContent);
+            new PersistenciaUsuarios().CargarUsuarios(galeria, jUsuarios);
+
+            // Cargar piezas
+            String piezasContent = new String(Files.readAllBytes(Paths.get("piezas.json")));
+            JSONObject jPiezas = new JSONObject(piezasContent);
+            new PersistenciaPiezas().cargarPiezas(jPiezas, galeria);
+
+            // Cargar subastas
+            String subastasContent = new String(Files.readAllBytes(Paths.get("subastas.json")));
+            JSONArray jSubastas = new JSONArray(subastasContent);
+            List<List<String>> subastas = new PersistenciaSubastas().cargarSubastas(jSubastas);
+            galeria.setRegistrosPorSubasta(subastas);
+
+            System.out.println("Datos cargados exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al cargar datos: " + e.getMessage());
+        }
+    }
+
+    private static void guardarDatos(GaleriaDeArte galeria) {
+        try {
+            // Guardar usuarios
+            JSONArray jUsuarios = new PersistenciaUsuarios().salvarUsuarios(galeria);
+            Files.write(Paths.get("usuarios.json"), jUsuarios.toString().getBytes());
+
+            // Guardar piezas
+            JSONObject jPiezas = new PersistenciaPiezas().salvarPiezas(galeria);
+            Files.write(Paths.get("piezas.json"), jPiezas.toString().getBytes());
+
+            // Guardar subastas
+            JSONArray jSubastas = new PersistenciaSubastas().salvarSubastas(galeria);
+            Files.write(Paths.get("subastas.json"), jSubastas.toString().getBytes());
+
+            System.out.println("Datos guardados exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar datos: " + e.getMessage());
+        }
+    }
+
+	public static GaleriaDeArte getModelo() {
+		// TODO Auto-generated method stub
+		return modelo;
 	}
 }

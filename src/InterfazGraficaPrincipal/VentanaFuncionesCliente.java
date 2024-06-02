@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +19,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import Model.GaleriaDeArte;
+import Persistencia.PersistenciaPiezas;
+import Persistencia.PersistenciaSubastas;
+import Persistencia.PersistenciaUsuarios;
 import Pieza.Pieza;
 import Usuario.Cliente;
 
@@ -273,6 +282,7 @@ public class VentanaFuncionesCliente extends JFrame {
         btnSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	guardarDatos(VentanaPrincipal.getModelo());
                 VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
                 ventanaPrincipal.setLocationRelativeTo(null);
                 ventanaPrincipal.setVisible(true);
@@ -281,6 +291,26 @@ public class VentanaFuncionesCliente extends JFrame {
         });
     }
 
+    private static void guardarDatos(GaleriaDeArte galeria) {
+        try {
+            // Guardar usuarios
+            JSONArray jUsuarios = new PersistenciaUsuarios().salvarUsuarios(galeria);
+            Files.write(Paths.get("usuarios.json"), jUsuarios.toString().getBytes());
+
+            // Guardar piezas
+            JSONObject jPiezas = new PersistenciaPiezas().salvarPiezas(galeria);
+            Files.write(Paths.get("piezas.json"), jPiezas.toString().getBytes());
+
+            // Guardar subastas
+            JSONArray jSubastas = new PersistenciaSubastas().salvarSubastas(galeria);
+            Files.write(Paths.get("subastas.json"), jSubastas.toString().getBytes());
+
+            System.out.println("Datos guardados exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar datos: " + e.getMessage());
+        }
+    }
+    
     public static void main(String[] args) {
         VentanaFuncionesCliente ventana = new VentanaFuncionesCliente();
         ventana.setLocationRelativeTo(null);
