@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Model.GaleriaDeArte;
+import Usuario.Cliente;
 
 public class VentanaPrincipal extends JFrame {
     private PanelOpciones panelOpc;
@@ -56,7 +57,8 @@ public class VentanaPrincipal extends JFrame {
         panelRegistroOperador.setActionListener(e -> registrarOperador());
         
         panelRegistroCliente = new PanelRegistroCliente();
-        panelRegistroCliente.setActionListener(e -> registrarCliente());
+        panelRegistroCliente.getBtnInicio().addActionListener(e -> ingresarCliente());
+        panelRegistroCliente.getBtnRegistrar().addActionListener(e -> registrarCliente());
         
 
         panelInicioSesion = new PanelInicioSesion(this); // Inicializar el nuevo panel
@@ -121,7 +123,7 @@ public class VentanaPrincipal extends JFrame {
         }
     }
     
-    private void registrarCliente() {
+    private void ingresarCliente() {
         String usuario = panelRegistroCliente.getUsuario();
         String contrasena = panelRegistroCliente.getContrasena();
 
@@ -135,6 +137,15 @@ public class VentanaPrincipal extends JFrame {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    private void registrarCliente() {
+    	String usuario = panelRegistroCliente.getUsuario();
+        String contrasena = panelRegistroCliente.getContrasena();
+        String nombre = panelRegistroCliente.getNombre();
+        modelo.AgregarUsuario(new Cliente(contrasena, usuario, nombre));
+        }
+
+   
 
     public static void main(String[] args) {
         VentanaPrincipal principal = new VentanaPrincipal();

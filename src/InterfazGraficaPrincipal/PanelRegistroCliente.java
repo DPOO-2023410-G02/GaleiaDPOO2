@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 public class PanelRegistroCliente  extends JPanel
 {
     private JTextField txtUsuario;
+    private JTextField txtNombre;
     private JPasswordField txtContrasena;
     private JButton btnInicio;
     private JButton btnRegistrar;
@@ -21,11 +22,13 @@ public class PanelRegistroCliente  extends JPanel
 
     public PanelRegistroCliente()
     {
-        setLayout(new GridLayout(4, 2));
-        setBorder(new TitledBorder("Inicio de sesion de Cliente"));
+        setLayout(new GridLayout(5, 2));
+        setBorder(new TitledBorder("Inicio de sesion de Cliente (si va a iniciar sesion no es necesario llenar la casilla de nombre)"));
 
         JLabel lblUsuario = new JLabel("Usuario:");
         txtUsuario = new JTextField();
+        JLabel lblNombre = new JLabel("Nombre:");
+        txtNombre = new JTextField();
         JLabel lblContrasena = new JLabel("Contraseña:");
         txtContrasena = new JPasswordField();
         btnInicio = new JButton("Ingresar");
@@ -33,6 +36,8 @@ public class PanelRegistroCliente  extends JPanel
 
         add(lblUsuario);
         add(txtUsuario);
+        add(lblNombre);
+        add(txtNombre);
         add(lblContrasena);
         add(txtContrasena);
         add(new JLabel());  // Empty label for alignment
@@ -51,8 +56,16 @@ public class PanelRegistroCliente  extends JPanel
             }
         });
         
-        btnRegistrar.addActionListener(listener);
-        
+        btnRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (listener != null)
+                {
+                    listener.actionPerformed(e);
+                }
+            }
+        });
     }
 
     public JButton getBtnInicio()
@@ -67,6 +80,11 @@ public class PanelRegistroCliente  extends JPanel
     public String getUsuario()
     {
         return txtUsuario.getText();
+    }
+    
+    public String getNombre()
+    {
+        return txtNombre.getText();
     }
 
     public String getContrasena()
