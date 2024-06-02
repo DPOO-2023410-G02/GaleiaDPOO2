@@ -1,5 +1,6 @@
 package InterfazGraficaPrincipal;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -14,7 +15,8 @@ public class PanelRegistro extends JPanel implements ActionListener {
 
     public PanelRegistro(VentanaPrincipal ventanaPrincipal) {
         this.ventanaPrincipal = ventanaPrincipal;
-
+        
+        setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "¿Como te quieres registrar?"));
         setLayout(new GridLayout(1, 3));
 
         optAdmin = new JButton("Administrador");

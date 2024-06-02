@@ -42,7 +42,7 @@ public class VentanaPrincipal extends JFrame {
         panelRegistroAdmin.setVisible(false);
 
         panelRegistroOperador = new PanelRegistroOperador();
-        panelRegistroOperador.setActionListener(e -> mostrarVentanaRegistroOperador());
+        panelRegistroOperador.setActionListener(e -> registrarOperador());
         add(panelRegistroOperador, BorderLayout.CENTER);
         panelRegistroOperador.setVisible(false);
 
@@ -69,32 +69,19 @@ public class VentanaPrincipal extends JFrame {
         panelRegistro.setVisible(false);
     }
 
-    private void mostrarVentanaRegistroOperador() {
-        JFrame ventanaRegistro = new JFrame("Registro de Operador");
-        PanelRegistroOperador panelRegistroOperador = new PanelRegistroOperador();
-        panelRegistroOperador.setActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String usuario = panelRegistroOperador.getUsuario();
-                String contrasena = panelRegistroOperador.getContrasena();
+    private void registrarOperador() {
+    	String usuario = panelRegistroOperador.getUsuario();
+        String contrasena = panelRegistroOperador.getContrasena();
 
-                if (modelo.iniciarSesionOperador(usuario, contrasena)) {
-                    JOptionPane.showMessageDialog(ventanaRegistro, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    VentanaFuncionesOperador ventanaFuncionesOperador = new VentanaFuncionesOperador();
-                    ventanaFuncionesOperador.setLocationRelativeTo(null);
-                    ventanaFuncionesOperador.setVisible(true);
-                    ventanaRegistro.dispose();
-                    VentanaPrincipal.this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(ventanaRegistro, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        ventanaRegistro.add(panelRegistroOperador);
-        ventanaRegistro.setSize(400, 200);
-        ventanaRegistro.setLocationRelativeTo(null);
-        ventanaRegistro.setVisible(true);
+        if (modelo.iniciarSesionAdmin(usuario, contrasena)) {
+            JOptionPane.showMessageDialog(this, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            VentanaFuncionesAdmin ventanaFuncionesAdmin = new VentanaFuncionesAdmin();
+            ventanaFuncionesAdmin.setLocationRelativeTo(null);
+            ventanaFuncionesAdmin.setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void registrarAdministrador() {
