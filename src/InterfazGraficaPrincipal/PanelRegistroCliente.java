@@ -11,6 +11,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import Usuario.Cliente;
+
 public class PanelRegistroCliente  extends JPanel
 {
     private JTextField txtUsuario;
@@ -19,7 +21,7 @@ public class PanelRegistroCliente  extends JPanel
     private JButton btnInicio;
     private JButton btnRegistrar;
     private ActionListener listener;
-
+    
     public PanelRegistroCliente()
     {
         setLayout(new GridLayout(5, 2));
