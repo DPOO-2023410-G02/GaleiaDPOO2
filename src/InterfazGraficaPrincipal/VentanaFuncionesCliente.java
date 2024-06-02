@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,6 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
+import Model.GaleriaDeArte;
+import Pieza.Pieza;
+import Usuario.Cliente;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -62,11 +68,48 @@ public class VentanaFuncionesCliente extends JFrame {
                     VentanaRegistroPieza ventanaRegistroPieza = new VentanaRegistroPieza();
                     ventanaRegistroPieza.setLocationRelativeTo(null);
                     ventanaRegistroPieza.setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, seleccion + " seleccionada");
+                } else if (seleccion.equals("Ver Saldo Actual")) {
+                    // Aquí obtenemos el saldo actual del cliente y lo mostramos en un mensaje
+                	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
+                    Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
+                    double saldo = cliente.getSaldo();
+                    JOptionPane.showMessageDialog(null, "Su saldo actual es: " + saldo);}
+                
+                    else if (seleccion.equals("Ver Piezas Propias")) {
+                        // Aquí obtenemos la lista de piezas del cliente
+                    	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
+                        List<Pieza> piezasPropias = GaleriaDeArte.getAdministrador().getPiezasCliente(usuario);
+
+                        if (piezasPropias.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "No posee piezas.");
+                        } else {
+                            // Crear una matriz para los datos de la tabla
+                            String[][] datos = new String[piezasPropias.size()][4];
+                            for (int i = 0; i < piezasPropias.size(); i++) {
+                                Pieza pieza = piezasPropias.get(i);
+                                datos[i][0] = pieza.getTitulo();
+                                datos[i][1] = pieza.getAutor();
+                                datos[i][2] = Integer.toString(pieza.getPrecioCompra());
+                                datos[i][3] = pieza.getCodigoPieza();
+                            }
+
+                            // Crear un array con los nombres de las columnas
+                            String[] columnas = {"Título", "Autor", "Tipo de Pieza", "Código"};
+
+                            // Crear la tabla con los datos y columnas
+                            JTable tablaPiezas = new JTable(datos, columnas);
+
+                            // Crear un JScrollPane para la tabla
+                            JScrollPane scrollPane = new JScrollPane(tablaPiezas);
+
+                            // Mostrar el diálogo con la tabla
+                            JOptionPane.showMessageDialog(null, scrollPane, "Piezas Propias", JOptionPane.PLAIN_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, seleccion + " seleccionada");
+                    }
                 }
-            }
-        });
+            });
 
         // Acción para el botón "Compra"
         btnCompra.addActionListener(new ActionListener() {
