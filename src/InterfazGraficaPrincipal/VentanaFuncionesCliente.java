@@ -130,19 +130,139 @@ public class VentanaFuncionesCliente extends JFrame {
             });
         
 
-        // Acción para el botón "Compra"
         btnCompra.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Función de compra seleccionada");
-            }
-        });
+                // Crear un nuevo JFrame para las opciones de compra
+                JFrame frameCompra = new JFrame("Opciones de Compra");
+                frameCompra.setLayout(new BorderLayout());
 
-        // Acción para el botón "Subasta"
-        btnSubasta.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Función de subasta seleccionada");
+                // Crear un JComboBox con las opciones y un JPanel para contenerlo
+                String[] opcionesCompra = {"Ver Piezas en Venta", "Comprar Pieza"};
+                JComboBox<String> comboBoxCompra = new JComboBox<>(opcionesCompra);
+                JPanel panelOpcionesCompra = new JPanel();
+                panelOpcionesCompra.add(comboBoxCompra);
+
+                // Agregar el JPanel al centro del JFrame
+                frameCompra.add(panelOpcionesCompra, BorderLayout.CENTER);
+
+                // Acción para el JComboBox
+                comboBoxCompra.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String seleccion = (String) comboBoxCompra.getSelectedItem();
+                        if (seleccion.equals("Ver Piezas en Venta")) {
+                            // Aquí puedes mostrar las piezas disponibles para comprar
+                            List<Pieza> piezasEnVenta = GaleriaDeArte.getInventario().getPiezasTotales();
+                            if (piezasEnVenta.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "No hay piezas en venta.");
+                            } else {
+                                // Crear una matriz para los datos de la tabla
+                                String[][] datos = new String[piezasEnVenta.size()][4];
+                                for (int i = 0; i < piezasEnVenta.size(); i++) {
+                                    Pieza pieza = piezasEnVenta.get(i);
+                                    datos[i][0] = pieza.getTitulo();
+                                    datos[i][1] = pieza.getAutor();
+                                    datos[i][2] = Integer.toString(pieza.getPrecioVenta());
+                                    datos[i][3] = pieza.getCodigoPieza();
+                                }
+
+                                // Crear un array con los nombres de las columnas
+                                String[] columnas = {"Título", "Autor", "Precio Venta", "Código"};
+
+                                // Crear la tabla con los datos y columnas
+                                JTable tablaPiezas = new JTable(datos, columnas);
+
+                                // Crear un JScrollPane para la tabla
+                                JScrollPane scrollPane = new JScrollPane(tablaPiezas);
+
+                                // Mostrar el diálogo con la tabla
+                                JOptionPane.showMessageDialog(null, scrollPane, "Piezas en Venta", JOptionPane.PLAIN_MESSAGE);
+                            }
+                        } else if (seleccion.equals("Comprar Pieza")) {
+                            // Crear un nuevo JFrame para la compra de la pieza
+                            JFrame frameCompraPieza = new JFrame("Compra de Pieza");
+                            frameCompraPieza.setLayout(new BorderLayout());
+
+                            // Crear JLabels y JComboBox para los datos de la compra
+                            JLabel lblCodigoPieza = new JLabel("Código de la Pieza:");
+                            JTextField txtCodigoPieza = new JTextField(20);
+                            JLabel lblMetodoPago = new JLabel("Método de Pago:");
+                            String[] opcionesMetodoPago = {"PayPal", "PayU"};
+                            JComboBox<String> comboBoxMetodoPago = new JComboBox<>(opcionesMetodoPago);
+                            JLabel lblNumeroTarjeta = new JLabel("Número de Tarjeta:");
+                            JTextField txtNumeroTarjeta = new JTextField(20);
+                            JLabel lblCodigoTarjeta = new JLabel("Código de Seguridad:");
+                            JTextField txtCodigoTarjeta = new JTextField(20);
+                            JLabel lblFechaExpiracion = new JLabel("Fecha de Expiración (MM/YY):");
+                            JTextField txtFechaExpiracion = new JTextField(20);
+
+                            // Panel para los campos de la compra
+                            JPanel panelCompraPieza = new JPanel();
+                            panelCompraPieza.setLayout(new GridLayout(6, 2));
+                            panelCompraPieza.add(lblCodigoPieza);
+                            panelCompraPieza.add(txtCodigoPieza);
+                            panelCompraPieza.add(lblMetodoPago);
+                            panelCompraPieza.add(comboBoxMetodoPago);
+                            panelCompraPieza.add(lblNumeroTarjeta);
+                            panelCompraPieza.add(txtNumeroTarjeta);
+                            panelCompraPieza.add(lblCodigoTarjeta);
+                            panelCompraPieza.add(txtCodigoTarjeta);
+                            panelCompraPieza.add(lblFechaExpiracion);
+                            panelCompraPieza.add(txtFechaExpiracion);
+
+                            // Botón para confirmar la compra
+                            JButton btnConfirmarCompra = new JButton("Confirmar Compra");
+                            frameCompraPieza.add(panelCompraPieza, BorderLayout.CENTER);
+                            frameCompraPieza.add(btnConfirmarCompra, BorderLayout.SOUTH);
+
+                            // Acción para el botón "Confirmar Compra"
+                            btnConfirmarCompra.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    // Obtener los datos ingresados por el usuario
+                                    String codigoPieza = txtCodigoPieza.getText();
+                                    String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
+                                    String numeroTarjeta = txtNumeroTarjeta.getText();
+                                    String codigoTarjeta = txtCodigoTarjeta.getText();
+                                    String fechaExpiracion = txtFechaExpiracion.getText();
+
+                                    // Validar los datos de la tarjeta (solo como ejemplo, debes implementar la validación adecuada)
+                                    if (numeroTarjeta.isEmpty() || codigoTarjeta.isEmpty() || fechaExpiracion.isEmpty()) {
+                                        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos de la tarjeta.");
+                                    } else {
+                                    	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
+                                        Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
+                                        	cliente.realizarOfertaCompraTarjeta(GaleriaDeArte.getInventario().getPiezaTotal(codigoPieza), numeroTarjeta, codigoTarjeta, fechaExpiracion, seleccion);
+                                    	
+                                    	
+                                        JOptionPane.showMessageDialog(null, "Compra realizada con éxito.");
+                                    }
+                                }
+                            });
+
+                            frameCompraPieza.setSize(400, 300);
+                            frameCompraPieza.setLocationRelativeTo(null);
+                            frameCompraPieza.setVisible(true);
+                        }
+                    
+                    }});
+
+                // Botón de salir
+                JButton btnSalirCompra = new JButton("Cerrar");
+                frameCompra.add(btnSalirCompra, BorderLayout.SOUTH);
+
+                // Acción para el botón "Cerrar"
+                btnSalirCompra.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        frameCompra.dispose(); // Cerrar la ventana de opciones de compra
+                    }
+                });
+
+                frameCompra.setSize(400, 200);
+                frameCompra.setLocationRelativeTo(null);
+                frameCompra.setVisible(true);
             }
         });
 

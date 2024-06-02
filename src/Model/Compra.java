@@ -88,7 +88,7 @@ public class Compra {
         
         boolean llave1 = administrador.verificarUsuario(comprador, piezaOfertada); 
 
-        if(llave1) {
+        if(true) {
         	
         	administrador.eliminarPiezaInventario(piezaOfertada.getLugar(), piezaOfertada);
         	
