@@ -15,6 +15,8 @@ public class VentanaPrincipal extends JFrame {
     private PanelOpciones panelOpc;
     private PanelImagen panelImg;
     private PanelRegistroAdmin panelRegistroAdmin;
+    private PanelRegistroCliente panelRegistroCliente;
+
     private PanelRegistroOperador panelRegistroOperador;
     private PanelInicioSesion panelInicioSesion; // Panel con los tres botones
     private JPanel panelContenedor; // Contenedor para los paneles de registro
@@ -52,6 +54,10 @@ public class VentanaPrincipal extends JFrame {
 
         panelRegistroOperador = new PanelRegistroOperador();
         panelRegistroOperador.setActionListener(e -> registrarOperador());
+        
+        panelRegistroCliente = new PanelRegistroCliente();
+        panelRegistroCliente.setActionListener(e -> registrarCliente());
+        
 
         panelInicioSesion = new PanelInicioSesion(this); // Inicializar el nuevo panel
 
@@ -59,6 +65,8 @@ public class VentanaPrincipal extends JFrame {
         panelContenedor.add(panelInicioSesion, "PanelRegistro");
         panelContenedor.add(panelRegistroAdmin, "PanelRegistroAdmin");
         panelContenedor.add(panelRegistroOperador, "PanelRegistroOperador");
+        panelContenedor.add(panelRegistroCliente, "PanelRegistroCliente");
+
 
         // Añadir el contenedor al centro del BorderLayout
         add(panelContenedor, BorderLayout.CENTER);
@@ -77,6 +85,10 @@ public class VentanaPrincipal extends JFrame {
 
     public void mostrarPanelRegistroOperador() {
         cardLayout.show(panelContenedor, "PanelRegistroOperador");
+    }
+    
+    public void mostrarPanelRegistroCliente() {
+        cardLayout.show(panelContenedor, "PanelRegistroCliente");
     }
 
     private void registrarOperador() {
@@ -103,6 +115,21 @@ public class VentanaPrincipal extends JFrame {
             VentanaFuncionesAdmin ventanaFuncionesAdmin = new VentanaFuncionesAdmin();
             ventanaFuncionesAdmin.setLocationRelativeTo(null);
             ventanaFuncionesAdmin.setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void registrarCliente() {
+        String usuario = panelRegistroCliente.getUsuario();
+        String contrasena = panelRegistroCliente.getContrasena();
+
+        if (modelo.iniciarSesionCliente(usuario, contrasena)) {
+            JOptionPane.showMessageDialog(this, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            VentanaFuncionesCliente ventanaFuncionesCliente = new VentanaFuncionesCliente();
+            ventanaFuncionesCliente.setLocationRelativeTo(null);
+            ventanaFuncionesCliente.setVisible(true);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);

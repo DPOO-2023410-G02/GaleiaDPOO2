@@ -39,7 +39,7 @@ public class PanelInicioSesion extends JPanel implements ActionListener {
         } else if (e.getSource() == optOper) {
             ventanaPrincipal.mostrarPanelRegistroOperador();
         } else if (e.getSource() == optCliente) {
-            // Aquí deberías mostrar el panel de registro de cliente
+            ventanaPrincipal.mostrarPanelRegistroCliente();
         }
     }
 }
