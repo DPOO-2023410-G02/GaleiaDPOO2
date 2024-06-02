@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -126,6 +128,7 @@ public class VentanaFuncionesCliente extends JFrame {
                     }
                 }
             });
+        
 
         // Acción para el botón "Compra"
         btnCompra.addActionListener(new ActionListener() {

@@ -157,7 +157,7 @@ public class GaleriaDeArte {
 		GaleriaDeArte.registrosPorSubasta = registrosPorSubasta;
 	}
 	
-    public Map<LocalDate, Integer> contarVentasPorDia() {
+    public static Map<LocalDate, Integer> contarVentasPorDia() {
         Map<LocalDate, Integer> ventasPorDia = new HashMap<>();
         List<Pieza> piezas = inventario.getPiezasPasadas();
         
