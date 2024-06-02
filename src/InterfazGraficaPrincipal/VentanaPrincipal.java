@@ -83,11 +83,11 @@ public class VentanaPrincipal extends JFrame {
         String usuario = panelRegistroOperador.getUsuario();
         String contrasena = panelRegistroOperador.getContrasena();
 
-        if (modelo.iniciarSesionAdmin(usuario, contrasena)) {
+        if (modelo.iniciarSesionOperador(usuario, contrasena)) {
             JOptionPane.showMessageDialog(this, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            VentanaFuncionesAdmin ventanaFuncionesAdmin = new VentanaFuncionesAdmin();
-            ventanaFuncionesAdmin.setLocationRelativeTo(null);
-            ventanaFuncionesAdmin.setVisible(true);
+            VentanaFuncionesOperador ventanaFuncionesOperador = new VentanaFuncionesOperador();
+            ventanaFuncionesOperador.setLocationRelativeTo(null);
+            ventanaFuncionesOperador.setVisible(true);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
