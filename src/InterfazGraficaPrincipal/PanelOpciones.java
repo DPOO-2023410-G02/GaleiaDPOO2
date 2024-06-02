@@ -18,7 +18,7 @@ public class PanelOpciones extends JPanel implements ActionListener {
         setLayout(new GridLayout(1, 1)); // GridLayout con una columna para el botón
         setBorder(new TitledBorder("Opciones"));
 
-        optReg = new JButton("Registrarse"); // Texto del botón para mostrar el panel de tres botones
+        optReg = new JButton("Iniciar Sesion"); // Texto del botón para mostrar el panel de tres botones
         optReg.setBackground(new Color(255, 255, 255));
         optReg.setForeground(Color.RED);
         optReg.addActionListener(this);

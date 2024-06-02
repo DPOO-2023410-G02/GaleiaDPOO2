@@ -20,13 +20,13 @@ public class PanelRegistroOperador extends JPanel
     public PanelRegistroOperador()
     {
         setLayout(new GridLayout(3, 2));
-        setBorder(new TitledBorder("Registro de Operador"));
+        setBorder(new TitledBorder("Inicio de sesion de Operador"));
 
         JLabel lblUsuario = new JLabel("Usuario:");
         txtUsuario = new JTextField();
         JLabel lblContrasena = new JLabel("Contraseña:");
         txtContrasena = new JPasswordField();
-        btnRegistrar = new JButton("Registrar");
+        btnRegistrar = new JButton("Ingresar");
 
         add(lblUsuario);
         add(txtUsuario);

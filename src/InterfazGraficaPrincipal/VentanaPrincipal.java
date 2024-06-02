@@ -16,7 +16,7 @@ public class VentanaPrincipal extends JFrame {
     private PanelImagen panelImg;
     private PanelRegistroAdmin panelRegistroAdmin;
     private PanelRegistroOperador panelRegistroOperador;
-    private PanelRegistro panelRegistro; // Panel con los tres botones
+    private PanelInicioSesion panelInicioSesion; // Panel con los tres botones
     private JPanel panelContenedor; // Contenedor para los paneles de registro
     private CardLayout cardLayout; // CardLayout para alternar entre paneles
     private GaleriaDeArte modelo;
@@ -53,10 +53,10 @@ public class VentanaPrincipal extends JFrame {
         panelRegistroOperador = new PanelRegistroOperador();
         panelRegistroOperador.setActionListener(e -> registrarOperador());
 
-        panelRegistro = new PanelRegistro(this); // Inicializar el nuevo panel
+        panelInicioSesion = new PanelInicioSesion(this); // Inicializar el nuevo panel
 
         // Añadir los paneles al contenedor
-        panelContenedor.add(panelRegistro, "PanelRegistro");
+        panelContenedor.add(panelInicioSesion, "PanelRegistro");
         panelContenedor.add(panelRegistroAdmin, "PanelRegistroAdmin");
         panelContenedor.add(panelRegistroOperador, "PanelRegistroOperador");
 

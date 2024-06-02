@@ -7,16 +7,16 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PanelRegistro extends JPanel implements ActionListener {
+public class PanelInicioSesion extends JPanel implements ActionListener {
     private JButton optAdmin;
     private JButton optOper;
     private JButton optCliente;
     private VentanaPrincipal ventanaPrincipal;
 
-    public PanelRegistro(VentanaPrincipal ventanaPrincipal) {
+    public PanelInicioSesion(VentanaPrincipal ventanaPrincipal) {
         this.ventanaPrincipal = ventanaPrincipal;
         
-        setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "¿Como te quieres registrar?"));
+        setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "¿Como quieres iniciar sesión?"));
         setLayout(new GridLayout(1, 3));
 
         optAdmin = new JButton("Administrador");
