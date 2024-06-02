@@ -18,7 +18,7 @@ public class VentanaRegistroPieza extends JFrame {
     private JTextField txtPrecio;
     private JTextField txtDescripcion;
     private JButton btnRegistrar;
-    private PanelRegistroCliente panelRegistroCliente;
+//    private PanelRegistroCliente panelRegistroCliente;
     
     public VentanaRegistroPieza() {
         setSize(400, 400);
@@ -44,7 +44,7 @@ public class VentanaRegistroPieza extends JFrame {
         JLabel lblDescripcion = new JLabel("Descripción:");
         txtDescripcion = new JTextField();
         
-        panelRegistroCliente = new PanelRegistroCliente();
+//        panelRegistroCliente = new PanelRegistroCliente();
         
         btnRegistrar = new JButton("Registrar");
         btnRegistrar.addActionListener(new ActionListener() {
@@ -57,11 +57,10 @@ public class VentanaRegistroPieza extends JFrame {
                 String lugarCreacion = txtOrigen.getText();
                 int precio = Integer.parseInt(txtPrecio.getText());
                 String descripcion = txtDescripcion.getText();
-                String usuario = panelRegistroCliente.getUsuario();
+                String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
                 Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
-                
-                
                 cliente.registrarPieza(String.valueOf(año), autor, lugarCreacion, titulo, precio);
+                
                 
                 // Aquí puedes agregar la lógica para almacenar esta información
                 JOptionPane.showMessageDialog(null, "Pieza registrada con éxito!");

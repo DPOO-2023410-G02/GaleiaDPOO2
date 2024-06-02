@@ -16,7 +16,7 @@ public class VentanaPrincipal extends JFrame {
     private PanelOpciones panelOpc;
     private PanelImagen panelImg;
     private PanelRegistroAdmin panelRegistroAdmin;
-    private PanelRegistroCliente panelRegistroCliente;
+    private static PanelRegistroCliente panelRegistroCliente;
 
     private PanelRegistroOperador panelRegistroOperador;
     private PanelInicioSesion panelInicioSesion; // Panel con los tres botones
@@ -56,9 +56,9 @@ public class VentanaPrincipal extends JFrame {
         panelRegistroOperador = new PanelRegistroOperador();
         panelRegistroOperador.setActionListener(e -> registrarOperador());
         
-        panelRegistroCliente = new PanelRegistroCliente();
-        panelRegistroCliente.getBtnInicio().addActionListener(e -> ingresarCliente());
-        panelRegistroCliente.getBtnRegistrar().addActionListener(e -> registrarCliente());
+        setPanelRegistroCliente(new PanelRegistroCliente());
+        getPanelRegistroCliente().getBtnInicio().addActionListener(e -> ingresarCliente());
+        getPanelRegistroCliente().getBtnRegistrar().addActionListener(e -> registrarCliente());
         
 
         panelInicioSesion = new PanelInicioSesion(this); // Inicializar el nuevo panel
@@ -67,7 +67,7 @@ public class VentanaPrincipal extends JFrame {
         panelContenedor.add(panelInicioSesion, "PanelRegistro");
         panelContenedor.add(panelRegistroAdmin, "PanelRegistroAdmin");
         panelContenedor.add(panelRegistroOperador, "PanelRegistroOperador");
-        panelContenedor.add(panelRegistroCliente, "PanelRegistroCliente");
+        panelContenedor.add(getPanelRegistroCliente(), "PanelRegistroCliente");
 
 
         // Añadir el contenedor al centro del BorderLayout
@@ -124,8 +124,8 @@ public class VentanaPrincipal extends JFrame {
     }
     
     private void ingresarCliente() {
-        String usuario = panelRegistroCliente.getUsuario();
-        String contrasena = panelRegistroCliente.getContrasena();
+        String usuario = getPanelRegistroCliente().getUsuario();
+        String contrasena = getPanelRegistroCliente().getContrasena();
 
         if (modelo.iniciarSesionCliente(usuario, contrasena)) {
             JOptionPane.showMessageDialog(this, "Ingreso exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -139,9 +139,9 @@ public class VentanaPrincipal extends JFrame {
     }
     
     private void registrarCliente() {
-    	String usuario = panelRegistroCliente.getUsuario();
-        String contrasena = panelRegistroCliente.getContrasena();
-        String nombre = panelRegistroCliente.getNombre();
+    	String usuario = getPanelRegistroCliente().getUsuario();
+        String contrasena = getPanelRegistroCliente().getContrasena();
+        String nombre = getPanelRegistroCliente().getNombre();
         modelo.AgregarUsuario(new Cliente(contrasena, usuario, nombre));
         JOptionPane.showMessageDialog(this, "Usuario registrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
@@ -154,4 +154,12 @@ public class VentanaPrincipal extends JFrame {
         principal.setLocationRelativeTo(null);
         principal.setVisible(true);
     }
+
+	public static PanelRegistroCliente getPanelRegistroCliente() {
+		return panelRegistroCliente;
+	}
+
+	public void setPanelRegistroCliente(PanelRegistroCliente panelRegistroCliente) {
+		this.panelRegistroCliente = panelRegistroCliente;
+	}
 }
