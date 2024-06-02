@@ -122,14 +122,21 @@ public class Inventario {
 	}
 	
 	public Pieza getPiezaTotal(String codigoPieza) {
-		Pieza piezaElegida = null;
-		for (Pieza pieza : getPiezasTotales()) {
-			if (pieza.getCodigoPieza().equals(codigoPieza)){
-				piezaElegida = pieza;
-			}
-		}
-		return piezaElegida;
+	    // Elimina los espacios al inicio y al final, y todos los espacios intermedios del código a buscar
+	    String codigoPiezaProcesado = codigoPieza.trim().replaceAll("\\s+", "");
+
+	    for (Pieza pieza : getPiezasTotales()) {
+	        // Elimina los espacios al inicio y al final, y todos los espacios intermedios del código de cada pieza
+	        String codigoPiezaDeListaProcesado = pieza.getCodigoPieza().trim().replaceAll("\\s+", "");
+
+	        if (codigoPiezaDeListaProcesado.equalsIgnoreCase(codigoPiezaProcesado)) {
+	            return pieza; // Devuelve la pieza si se encuentra
+	        }
+	    }
+	    return null; // Devuelve null si la pieza no se encuentra
 	}
+
+
 
 	public List<Artista> getArtistas() {
 		return artistas;

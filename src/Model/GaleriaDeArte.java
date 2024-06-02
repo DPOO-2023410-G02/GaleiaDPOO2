@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import PasarelasPago.GestorPasarelas;
 import Pieza.Pieza;
 import Usuario.Administrador;
 import Usuario.Cajero;
@@ -37,6 +38,9 @@ public class GaleriaDeArte {
 	
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
+	private static GestorPasarelas gestorPasarelasPago;
+	
+	
 	// Se Inicializa una galeria de arte con los contenedores de información
 	public GaleriaDeArte()
 	
@@ -48,6 +52,8 @@ public class GaleriaDeArte {
 		operador = null;
 		cajero = null;
 		registrosPorSubasta = new ArrayList<>();
+        gestorPasarelasPago = new GestorPasarelas();
+        gestorPasarelasPago.inicializarPasarelas();
 	}
 	
 	public void AgregarAdministrador(String password, String login, String name) {
@@ -156,8 +162,7 @@ public class GaleriaDeArte {
 	public static void setRegistrosPorSubasta(List<List<String>> registrosPorSubasta) {
 		GaleriaDeArte.registrosPorSubasta = registrosPorSubasta;
 	}
-	
-    public static Map<LocalDate, Integer> contarVentasPorDia() {
+	public static Map<LocalDate, Integer> contarVentasPorDia() {
         Map<LocalDate, Integer> ventasPorDia = new HashMap<>();
         List<Pieza> piezas = inventario.getPiezasPasadas();
         
@@ -167,6 +172,11 @@ public class GaleriaDeArte {
         }
         
         return ventasPorDia;
-    }	
-
+    }
+	
+	
+	
+	public static GestorPasarelas getGestorPasarelasPago() {
+	        return gestorPasarelasPago;
+	}
 }

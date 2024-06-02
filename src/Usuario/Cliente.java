@@ -54,6 +54,17 @@ public class Cliente extends Usuario {
 	    	compra.registrarCompra(piezaOfertada, this);
     	}
     }
+    
+public void realizarOfertaCompraTarjeta(Pieza piezaOfertada, String numero, String csv, String fecha, String pasarela) {
+    	
+    	boolean disponible = piezaOfertada.isDisponible();
+    	
+    	if(disponible) {
+	    	Compra compra = new Compra(piezaOfertada);
+	    	compra.registrarCompraTarjeta(piezaOfertada, this,  numero,  csv, fecha, pasarela );
+    	}
+    }
+    
 
 	public int getValorMaximo() {
 		return valorMaximo;

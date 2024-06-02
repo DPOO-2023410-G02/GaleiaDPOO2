@@ -107,16 +107,44 @@ public class ClienteMain {
  
                 	
                     break;
+                    
                 case 2:
                     Cliente clienteCompra = (Cliente) galeria.getUsuario(nombreUsuarioAutenticado);
 
-                    System.out.print("Ingrese el codigo de la pieza que desea comprar: ");
-                    scanner.nextLine();
+                    System.out.print("Ingrese el código de la pieza que desea comprar: ");
                     String codigoPiezaCompra = scanner.nextLine();
+
+                    if (codigoPiezaCompra.isEmpty()) {
+                        System.out.println("No se ha ingresado ningún código.");
+                        break;
+                    }
+
                     Pieza piezaCompra = galeria.getInventario().getPiezaTotal(codigoPiezaCompra);
-                    clienteCompra.realizarOfertaCompra(piezaCompra);
+
+                    System.out.println("Ingrese los datos de su tarjeta de crédito:");
+                    
+                    System.out.print("Número de tarjeta: ");
+                    String numeroTarjeta = scanner.nextLine(); // Usar nextLine()
+
+                    System.out.print("CSV (Código de seguridad): ");
+                    String csv = scanner.nextLine(); // Usar nextLine()
+
+                    System.out.print("Fecha de expiración (MM/YY): ");
+                    String fechaExpiracion = scanner.nextLine(); // Usar nextLine()
+
+                    // Llamada a la función para registrar la compra con tarjeta
+                    clienteCompra.realizarOfertaCompraTarjeta(piezaCompra, numeroTarjeta, csv, fechaExpiracion, "PayPal");
                     break;
+
+
+
+
+
+
+                    
+                    
                 case 3:
+                
                     
                     List<Pieza> piezasCliente = galeria.getAdministrador().getPiezasCliente(nombreUsuarioAutenticado);
                     for (Pieza pieza : piezasCliente) {
