@@ -143,6 +143,8 @@ public class VentanaPrincipal extends JFrame {
         String contrasena = panelRegistroCliente.getContrasena();
         String nombre = panelRegistroCliente.getNombre();
         modelo.AgregarUsuario(new Cliente(contrasena, usuario, nombre));
+        JOptionPane.showMessageDialog(this, "Usuario registrado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
    
