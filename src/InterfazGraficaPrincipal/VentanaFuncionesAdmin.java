@@ -6,6 +6,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -21,8 +24,14 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import Model.Compra;
 import Model.GaleriaDeArte;
+import Persistencia.PersistenciaPiezas;
+import Persistencia.PersistenciaSubastas;
+import Persistencia.PersistenciaUsuarios;
 import Pieza.Pieza;
 import Usuario.Cliente;
 import Usuario.Usuario;
@@ -181,6 +190,7 @@ public class VentanaFuncionesAdmin extends JFrame {
         btnSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	guardarDatos(VentanaPrincipal.getModelo());
                 VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
                 ventanaPrincipal.setLocationRelativeTo(null);
                 ventanaPrincipal.setVisible(true);
@@ -238,6 +248,25 @@ public class VentanaFuncionesAdmin extends JFrame {
         // Mostrar la tabla en un JOptionPane
         JOptionPane.showMessageDialog(null, new JScrollPane(table), "Historial de compras",
                 JOptionPane.PLAIN_MESSAGE);
+    }
+    private static void guardarDatos(GaleriaDeArte galeria) {
+        try {
+            // Guardar usuarios
+            JSONArray jUsuarios = new PersistenciaUsuarios().salvarUsuarios(galeria);
+            Files.write(Paths.get("usuarios.json"), jUsuarios.toString().getBytes());
+
+            // Guardar piezas
+            JSONObject jPiezas = new PersistenciaPiezas().salvarPiezas(galeria);
+            Files.write(Paths.get("piezas.json"), jPiezas.toString().getBytes());
+
+            // Guardar subastas
+            JSONArray jSubastas = new PersistenciaSubastas().salvarSubastas(galeria);
+            Files.write(Paths.get("subastas.json"), jSubastas.toString().getBytes());
+
+            System.out.println("Datos guardados exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar datos: " + e.getMessage());
+        }
     }
     public static void main(String[] args) {
         VentanaFuncionesAdmin ventana = new VentanaFuncionesAdmin();
