@@ -262,7 +262,8 @@ public class VentanaFuncionesCliente extends JFrame {
                         	Collection<PiezaSubastada> piezasSubasta = subasta.getPiezasSubasta().values();
                         	List<String> titulosPiezasList = new ArrayList<>();
                         	for (PiezaSubastada pieza : piezasSubasta) {
-                        	    titulosPiezasList.add(pieza.getPiezaAsociada().getTitulo() + " - Precio actual: " + pieza.getMayorPuja());
+                        	    titulosPiezasList.add(pieza.getPiezaAsociada().getTitulo());
+//                        	    + " - Precio actual: " + pieza.getMayorPuja()
                         	}
                         	JComboBox<String> comboBoxPiezas = new JComboBox<>(titulosPiezasList.toArray(new String[0]));
 
@@ -271,9 +272,10 @@ public class VentanaFuncionesCliente extends JFrame {
                         	if (result == JOptionPane.OK_OPTION) {
                         	    // Obtener el título de la pieza seleccionada
                         	    String tituloPiezaSeleccionada = (String) comboBoxPiezas.getSelectedItem();
+                        	    String pujaMayor = "" + subasta.getPiezasSubasta().get(tituloPiezaSeleccionada).getMayorPuja();
 
                         	    // Mostrar un JOptionPane para ingresar la nueva puja
-                        	    String valorPujaStr = JOptionPane.showInputDialog(null, "Ingrese el valor de su puja para " + tituloPiezaSeleccionada, "Nueva Puja", JOptionPane.PLAIN_MESSAGE);
+                        	    String valorPujaStr = JOptionPane.showInputDialog(null, "Ingrese el valor de su puja para " + tituloPiezaSeleccionada +", precio minimo: " + pujaMayor, "Nueva Puja", JOptionPane.PLAIN_MESSAGE);
                         	    if (valorPujaStr != null && !valorPujaStr.isEmpty()) {
                         	        int valorPuja = Integer.parseInt(valorPujaStr);
 
