@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Model.GaleriaDeArte;
+import Model.PiezaSubastada;
 import Model.Subasta;
 import Persistencia.PersistenciaPiezas;
 import Persistencia.PersistenciaSubastaActual;
@@ -242,17 +245,47 @@ public class VentanaFuncionesCliente extends JFrame {
                         	boolean confirmacion = administrador.verificarUsuarioSubasta(cliente, subasta.obtenerValorMinimoPrecioActual());
                         	if (confirmacion!= false) {
                         		cliente.ingresarASubasta();
+                        		JOptionPane.showMessageDialog(null, "Ingreso exitoso a subasta");
                         	} else {
                                 JOptionPane.showMessageDialog(null, "No es apto para la subasta", "Error", JOptionPane.ERROR_MESSAGE);
                         	}
                         	
-                            JOptionPane.showMessageDialog(null, "Ingresar a subasta");
-                        	}}else if (seleccion.equals("Realizar puja")) {
-                            // Aquí puedes implementar la funcionalidad para realizar una puja
-                            JOptionPane.showMessageDialog(null, "Realizar puja");
-                        }}
+                        	}}
+                        
+                        
+                        else if (seleccion.equals("Realizar puja")) {
+                        	
+                        	
+                        	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
+                        	Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
+                        	Subasta subasta = GaleriaDeArte.getSubasta();
+                        	Collection<PiezaSubastada> piezasSubasta = subasta.getPiezasSubasta().values();
+                        	List<String> titulosPiezasList = new ArrayList<>();
+                        	for (PiezaSubastada pieza : piezasSubasta) {
+                        	    titulosPiezasList.add(pieza.getPiezaAsociada().getTitulo() + " - Precio actual: " + pieza.getMayorPuja());
+                        	}
+                        	JComboBox<String> comboBoxPiezas = new JComboBox<>(titulosPiezasList.toArray(new String[0]));
+
+                        	// Mostrar un JOptionPane para seleccionar la pieza
+                        	int result = JOptionPane.showConfirmDialog(null, comboBoxPiezas, "Selecciona la pieza para pujar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                        	if (result == JOptionPane.OK_OPTION) {
+                        	    // Obtener el título de la pieza seleccionada
+                        	    String tituloPiezaSeleccionada = (String) comboBoxPiezas.getSelectedItem();
+
+                        	    // Mostrar un JOptionPane para ingresar la nueva puja
+                        	    String valorPujaStr = JOptionPane.showInputDialog(null, "Ingrese el valor de su puja para " + tituloPiezaSeleccionada, "Nueva Puja", JOptionPane.PLAIN_MESSAGE);
+                        	    if (valorPujaStr != null && !valorPujaStr.isEmpty()) {
+                        	        int valorPuja = Integer.parseInt(valorPujaStr);
+
+                        	        // Realizar la oferta de subasta
+                        	        cliente.realizarOfertaSubasta(tituloPiezaSeleccionada, valorPuja);
+
+                        	    } else {
+                        	        JOptionPane.showMessageDialog(null, "Debe ingresar un valor para la puja.", "Error", JOptionPane.ERROR_MESSAGE);
+                        	    }
+                        	}}
                     
-                });
+                }});
 
                 // Botón de salir
                 JButton btnSalirSubasta = new JButton("Cerrar");
