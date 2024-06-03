@@ -26,6 +26,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -171,6 +172,13 @@ public class VentanaFuncionesOperador extends JFrame {
         btnFinalizarSubasta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	String nombreArchivo = "subastaActual.json";
+                File archivo = new File(nombreArchivo);
+                if (archivo.exists()) {archivo.delete();}
+                
+            	if(GaleriaDeArte.getSubasta() == null) {
+                    JOptionPane.showMessageDialog(null, "No hay subasta para cerrar.", "Error", JOptionPane.ERROR_MESSAGE);
+            	};
                 GaleriaDeArte.getOperador().finalizarSubastaOperador();;
                 JOptionPane.showMessageDialog(null, "Subasta Finalizada");
             }
@@ -183,6 +191,7 @@ public class VentanaFuncionesOperador extends JFrame {
         btnSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
             	guardarDatos(VentanaPrincipal.getModelo());
                 VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
                 ventanaPrincipal.setLocationRelativeTo(null);

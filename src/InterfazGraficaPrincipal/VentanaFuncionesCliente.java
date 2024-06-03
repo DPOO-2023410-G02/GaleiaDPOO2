@@ -255,7 +255,10 @@ public class VentanaFuncionesCliente extends JFrame {
                         
                         else if (seleccion.equals("Realizar puja")) {
                         	
-                        	
+                        	if (GaleriaDeArte.getSubasta()==null) {
+                                JOptionPane.showMessageDialog(null, "No hay subasta para pujar.", "Error", JOptionPane.ERROR_MESSAGE);
+
+                        	}else {
                         	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
                         	Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
                         	Subasta subasta = GaleriaDeArte.getSubasta();
@@ -285,7 +288,7 @@ public class VentanaFuncionesCliente extends JFrame {
                         	    } else {
                         	        JOptionPane.showMessageDialog(null, "Debe ingresar un valor para la puja.", "Error", JOptionPane.ERROR_MESSAGE);
                         	    }
-                        	}}
+                        	}}}
                     
                 }});
 
