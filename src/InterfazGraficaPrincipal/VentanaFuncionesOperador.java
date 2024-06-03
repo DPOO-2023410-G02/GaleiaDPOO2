@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import Model.GaleriaDeArte;
 import Persistencia.PersistenciaPiezas;
+import Persistencia.PersistenciaSubastaActual;
 import Persistencia.PersistenciaSubastas;
 import Persistencia.PersistenciaUsuarios;
 import Pieza.Pieza;
@@ -204,6 +205,12 @@ public class VentanaFuncionesOperador extends JFrame {
             // Guardar subastas
             JSONArray jSubastas = new PersistenciaSubastas().salvarSubastas(galeria);
             Files.write(Paths.get("subastas.json"), jSubastas.toString().getBytes());
+
+            // Guardar subasta actual
+            JSONObject jSubastaActual = new PersistenciaSubastaActual().salvarSubasta(galeria);
+            if (jSubastaActual != null) {
+                Files.write(Paths.get("subastaActual.json"), jSubastaActual.toString().getBytes());
+            }
 
             System.out.println("Datos guardados exitosamente.");
         } catch (IOException e) {

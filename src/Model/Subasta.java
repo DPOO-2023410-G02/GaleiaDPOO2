@@ -140,6 +140,30 @@ public class Subasta {
 	public boolean isInicializacion() {
 		return inicializacion;
 	}
+
+	public List<String> getRegistrosPujas() {
+		return registrosPujas;
+	}
+
+	public void setPiezasParaSubastar(List<Pieza> piezasParaSubastar) {
+		this.piezasParaSubastar = piezasParaSubastar;
+	}
+
+	public void setInicializacion(boolean inicializacion) {
+		this.inicializacion = inicializacion;
+	}
+
+	public void setPiezasSubasta(HashMap<String, PiezaSubastada> piezasSubasta) {
+		this.piezasSubasta = piezasSubasta;
+	}
+
+	public void setClientesSubasta(List<Cliente> clientesSubasta) {
+		this.clientesSubasta = clientesSubasta;
+	}
+
+	public void setRegistrosPujas(List<String> registrosPujas) {
+		this.registrosPujas = registrosPujas;
+	}
 	
 	
 	

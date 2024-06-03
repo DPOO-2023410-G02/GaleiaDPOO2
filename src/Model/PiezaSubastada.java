@@ -50,6 +50,21 @@ public class PiezaSubastada {
 	public Pieza getPiezaAsociada() {
 		return piezaAsociada;
 	}
+
+
+	public void setValorInicialSubasta(int valorInicialSubasta) {
+		this.valorInicialSubasta = valorInicialSubasta;
+	}
+
+
+	public void setValorMinimoVenta(int valorMinimoVenta) {
+		this.valorMinimoVenta = valorMinimoVenta;
+	}
+
+
+	public void setPiezaAsociada(Pieza piezaAsociada) {
+		this.piezaAsociada = piezaAsociada;
+	}
 	
 	
 	

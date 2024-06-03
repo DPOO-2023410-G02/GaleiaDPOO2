@@ -112,6 +112,7 @@ public class PersistenciaUsuarios {
         	String titulo = pieza.getTitulo();
         	int precioCompra = pieza.getPrecioCompra();
         	
+        	
         	jPieza.put("anoCreacion", anoCreacion);
         	jPieza.put("autor", autor);
         	jPieza.put("codigo", codigo);

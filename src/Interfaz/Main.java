@@ -3,6 +3,7 @@ package Interfaz;
 import Model.GaleriaDeArte;
 import Persistencia.PersistenciaUsuarios;
 import Persistencia.PersistenciaPiezas;
+import Persistencia.PersistenciaSubastaActual;
 import Persistencia.PersistenciaSubastas;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,11 +84,19 @@ public class Main {
             List<List<String>> subastas = new PersistenciaSubastas().cargarSubastas(jSubastas);
             galeria.setRegistrosPorSubasta(subastas);
 
+            // Cargar subasta actual
+            String subastaActualContent = new String(Files.readAllBytes(Paths.get("subastaActual.json")));
+            if (!subastaActualContent.isEmpty()) {
+                JSONObject jSubastaActual = new JSONObject(subastaActualContent);
+                new PersistenciaSubastaActual().cargarSubasta(galeria, jSubastaActual);
+            }
+
             System.out.println("Datos cargados exitosamente.");
         } catch (IOException e) {
             System.out.println("Error al cargar datos: " + e.getMessage());
         }
     }
+
 
     private static void guardarDatos(GaleriaDeArte galeria) {
         try {
@@ -103,10 +112,17 @@ public class Main {
             JSONArray jSubastas = new PersistenciaSubastas().salvarSubastas(galeria);
             Files.write(Paths.get("subastas.json"), jSubastas.toString().getBytes());
 
+            // Guardar subasta actual
+            JSONObject jSubastaActual = new PersistenciaSubastaActual().salvarSubasta(galeria);
+            if (jSubastaActual != null) {
+                Files.write(Paths.get("subastaActual.json"), jSubastaActual.toString().getBytes());
+            }
+
             System.out.println("Datos guardados exitosamente.");
         } catch (IOException e) {
             System.out.println("Error al guardar datos: " + e.getMessage());
         }
     }
+
 }
 

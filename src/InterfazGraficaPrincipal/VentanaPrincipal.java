@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import Model.GaleriaDeArte;
 import Persistencia.PersistenciaPiezas;
+import Persistencia.PersistenciaSubastaActual;
 import Persistencia.PersistenciaSubastas;
 import Persistencia.PersistenciaUsuarios;
 import Usuario.Cliente;
@@ -41,10 +42,10 @@ public class VentanaPrincipal extends JFrame {
 
         try {
             modelo = new GaleriaDeArte();
-            cargarDatos(modelo);
             modelo.AgregarAdministrador("1234", "admin23", "Camilo");
             modelo.AgregarCajero("1234", "cajero23", "Ernesto");
             modelo.AgregarOperador("1234", "operador23", "Arturo");
+            cargarDatos(modelo);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar el museo", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -174,7 +175,7 @@ public class VentanaPrincipal extends JFrame {
 		this.panelRegistroCliente = panelRegistroCliente;
 	}
 	
-	private static void cargarDatos(GaleriaDeArte galeria) {
+    private static void cargarDatos(GaleriaDeArte galeria) {
         try {
             // Cargar usuarios
             String usuariosContent = new String(Files.readAllBytes(Paths.get("usuarios.json")));
@@ -191,6 +192,13 @@ public class VentanaPrincipal extends JFrame {
             JSONArray jSubastas = new JSONArray(subastasContent);
             List<List<String>> subastas = new PersistenciaSubastas().cargarSubastas(jSubastas);
             galeria.setRegistrosPorSubasta(subastas);
+
+            // Cargar subasta actual
+            String subastaActualContent = new String(Files.readAllBytes(Paths.get("subastaActual.json")));
+            if (!subastaActualContent.isEmpty()) {
+                JSONObject jSubastaActual = new JSONObject(subastaActualContent);
+                new PersistenciaSubastaActual().cargarSubasta(galeria, jSubastaActual);
+            }
 
             System.out.println("Datos cargados exitosamente.");
         } catch (IOException e) {
