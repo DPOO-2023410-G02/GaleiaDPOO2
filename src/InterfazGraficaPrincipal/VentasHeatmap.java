@@ -49,7 +49,7 @@ public class VentasHeatmap extends JPanel {
             row = (dayOfWeek == -1) ? rows - 1 : dayOfWeek;
             
             int ventasEnEsteDia = ventasPorDia.getOrDefault(date, 0);
-            double intensity = (double) ventasEnEsteDia / 5;
+            double intensity = (double) ventasEnEsteDia / 10;
             int colorValue = (int) (255 * (1.0 - intensity));
             g.setColor(new Color(colorValue, colorValue, colorValue));
             g.fillRect(col * (cellSize + padding), row * (cellSize + padding), cellSize, cellSize);

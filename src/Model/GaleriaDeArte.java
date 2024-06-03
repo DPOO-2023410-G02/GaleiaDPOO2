@@ -167,13 +167,20 @@ public class GaleriaDeArte {
         List<Pieza> piezas = inventario.getPiezasPasadas();
         
         for (Pieza pieza : piezas) {
-            LocalDate fecha = LocalDate.parse(pieza.getFechaVenta(), formatter);
-            ventasPorDia.put(fecha, ventasPorDia.getOrDefault(fecha, 0) + 1);
+        	if(pieza != null){
+	        	if(pieza.getFechaVenta() != null) {
+		            LocalDate fecha = LocalDate.parse(pieza.getFechaVenta(), formatter);
+		            ventasPorDia.put(fecha, ventasPorDia.getOrDefault(fecha, 0) + 1);
+	        	}
+	        	else {
+	            	LocalDate fecha = LocalDate.now();
+	            	ventasPorDia.put(fecha, ventasPorDia.getOrDefault(fecha, 0) + 1);
+	        	}
+        	}
         }
         
         return ventasPorDia;
     }
-	
 	
 	
 	public static GestorPasarelas getGestorPasarelasPago() {
