@@ -134,7 +134,72 @@ public class VentanaFuncionesCliente extends JFrame {
                         } else {
                             JOptionPane.showMessageDialog(null, "No se ingresó ningún código de pieza", "Error", JOptionPane.ERROR_MESSAGE);
                         }
-                    } else {
+                    } else if (seleccion.equals("Agregar Saldo")) {
+                        JFrame frameSaldo = new JFrame("Compra de Pieza");
+                        frameSaldo.setLayout(new BorderLayout());
+
+                        // Crear JLabels y JComboBox para los datos de la compra
+                        JLabel lblSaldo = new JLabel("Saldo a recargar:");
+                        JTextField txtSaldo = new JTextField(20);
+                        JLabel lblMetodoPago = new JLabel("Método de Pago:");
+                        String[] opcionesMetodoPago = {"PayPal", "PayU"};
+                        JComboBox<String> comboBoxMetodoPago = new JComboBox<>(opcionesMetodoPago);
+                        JLabel lblNumeroTarjeta = new JLabel("Número de Tarjeta:");
+                        JTextField txtNumeroTarjeta = new JTextField(20);
+                        JLabel lblCodigoTarjeta = new JLabel("Código de Seguridad:");
+                        JTextField txtCodigoTarjeta = new JTextField(20);
+                        JLabel lblFechaExpiracion = new JLabel("Fecha de Expiración (MM/YY):");
+                        JTextField txtFechaExpiracion = new JTextField(20);
+
+                        // Panel para los campos de la compra
+                        JPanel panelCompraPieza = new JPanel();
+                        panelCompraPieza.setLayout(new GridLayout(6, 2));
+                        panelCompraPieza.add(lblSaldo);
+                        panelCompraPieza.add(txtSaldo);
+                        panelCompraPieza.add(lblMetodoPago);
+                        panelCompraPieza.add(comboBoxMetodoPago);
+                        panelCompraPieza.add(lblNumeroTarjeta);
+                        panelCompraPieza.add(txtNumeroTarjeta);
+                        panelCompraPieza.add(lblCodigoTarjeta);
+                        panelCompraPieza.add(txtCodigoTarjeta);
+                        panelCompraPieza.add(lblFechaExpiracion);
+                        panelCompraPieza.add(txtFechaExpiracion);
+
+                        // Botón para confirmar la compra
+                        JButton btnConfirmarCompra = new JButton("Confirmar Compra");
+                        frameSaldo.add(panelCompraPieza, BorderLayout.CENTER);
+                        frameSaldo.add(btnConfirmarCompra, BorderLayout.SOUTH);
+
+                        // Acción para el botón "Confirmar Compra"
+                        btnConfirmarCompra.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // Obtener los datos ingresados por el usuario
+                                int saldo = Integer.parseInt(txtSaldo.getText());
+                                String metodoPago = (String) comboBoxMetodoPago.getSelectedItem();
+                                String numeroTarjeta = txtNumeroTarjeta.getText();
+                                String codigoTarjeta = txtCodigoTarjeta.getText();
+                                String fechaExpiracion = txtFechaExpiracion.getText();
+
+                                // Validar los datos de la tarjeta (solo como ejemplo, debes implementar la validación adecuada)
+                                if (numeroTarjeta.isEmpty() || codigoTarjeta.isEmpty() || fechaExpiracion.isEmpty()) {
+                                    JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos de la tarjeta.");
+                                } else {
+                                	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
+                                    Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
+                                    cliente.agregarSaldo(saldo);
+                                	
+                                    JOptionPane.showMessageDialog(null, "Recarga exitosa.");
+                                }
+                            }
+                        });
+
+                        frameSaldo.setSize(400, 300);
+                        frameSaldo.setLocationRelativeTo(null);
+                        frameSaldo.setVisible(true);
+                    	
+                    }
+                    else {
                         JOptionPane.showMessageDialog(null, seleccion + " seleccionada");
                     }
                 }
@@ -162,24 +227,30 @@ public class VentanaFuncionesCliente extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         String seleccion = (String) comboBoxSubasta.getSelectedItem();
                         if (seleccion.equals("Ingresar a subasta")) {
+                        	
+                        	if (GaleriaDeArte.getSubasta()==null) {
+                                JOptionPane.showMessageDialog(null, "No hay una subasta activa", "Error", JOptionPane.ERROR_MESSAGE);
+                        	} else {
+
+                        	
+                        	
                         	Administrador administrador =GaleriaDeArte.getAdministrador();
                         	String usuario = VentanaPrincipal.getPanelRegistroCliente().getUsuario();
                             Cliente cliente = (Cliente) GaleriaDeArte.getUsuario(usuario);
                             Subasta subasta = GaleriaDeArte.getSubasta();
                         	boolean confirmacion = administrador.verificarUsuarioSubasta(cliente, subasta.obtenerValorMinimoPrecioActual());
-
                         	if (confirmacion!= false) {
                         		cliente.ingresarASubasta();
                         	} else {
-                        		
+                                JOptionPane.showMessageDialog(null, "No es apto para la subasta", "Error", JOptionPane.ERROR_MESSAGE);
                         	}
                         	
                             JOptionPane.showMessageDialog(null, "Ingresar a subasta");
-                        } else if (seleccion.equals("Realizar puja")) {
+                        	}}else if (seleccion.equals("Realizar puja")) {
                             // Aquí puedes implementar la funcionalidad para realizar una puja
                             JOptionPane.showMessageDialog(null, "Realizar puja");
-                        }
-                    }
+                        }}
+                    
                 });
 
                 // Botón de salir
